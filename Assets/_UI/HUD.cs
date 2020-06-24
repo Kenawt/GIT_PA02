@@ -6,32 +6,27 @@ using UnityEngine.UI;
 public class HUD : MonoBehaviour
 {
     public static HUD HUDManager;
-    [SerializeField] private Text Txt_Score = null;
-    [SerializeField] private Image Image_Lives = null;
-    [SerializeField] private Text Txt_Message = null;
+    [SerializeField] private Image Image_Lives;
+    [SerializeField] private Text Txt_Message;
  
     void Start()
     {
         HUDManager = this;
     }
 
-    public void UpdateScore()
-    {
-        Txt_Score.text = "SCORE : " + GameManager.Score;
-    }
-
-    //updates the number of hearts for lives
-    public void UpdateLives()
+    //Keep lives updated
+    void Update()
     {
         Image_Lives.rectTransform.sizeDelta = new Vector2(GameManager.Lives * 50, 30);
-    }
 
-    public void GameOver()
-    {
-        Time.timeScale = 0;
-        GameManager.CurrentState = GameManager.GameState.GameOver;
-        Txt_Message.color = Color.red;
-        Txt_Message.text = "GAME OVER! \n PRESS ENTER TO RESTART GAME.";
+        if(GameManager.Lives == 0)
+        {
+            Image_Lives.enabled = false;
+            GameManager.CurrentState = GameManager.GameState.GameOver;
+            Txt_Message.color = Color.red;
+            Txt_Message.text = "GAME OVER! \n PRESS ENTER TO RESTART GAME.";
+            Time.timeScale = 0;
+        }
     }
 
     public void DismissMessage()

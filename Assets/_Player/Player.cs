@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class Player : MonoBehaviour
     private Vector3 MoveDirection = Vector3.zero;
     private Transform playerMesh = null;
     private Animator thisAnimator = null;
+    public GameObject Explosion;
+    public GameObject TempObj;
+    public Text Txt_Score;
 
     private float moveSpeed = 0.05f;
 
@@ -24,6 +28,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        Txt_Score.text = "SCORE : " + GameManager.Score;
         if (!Jump)
         {
             if (Input.GetKey(KeyCode.Space))
@@ -52,6 +57,16 @@ public class Player : MonoBehaviour
 
         thisController.Move(MoveDirection);
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -1.5f, 1.5f), transform.position.y, transform.position.z);
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Obstacle")
+        {
+            TempObj = Instantiate(Explosion, transform.position, transform.rotation) as GameObject;
+            Destroy(TempObj, 1.2f);
+            GameManager.Lives -= 1;
+        }
     }
 
 }

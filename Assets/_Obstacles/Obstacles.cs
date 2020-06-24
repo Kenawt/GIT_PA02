@@ -1,11 +1,14 @@
 ﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Obstacles : MonoBehaviour
 {
     [SerializeField] private int Hitpoints = 3;
     [SerializeField] private bool RandomRotation = false;
+
+    private bool ScoreAdd = false;
 
     private void Start()
     {
@@ -17,9 +20,10 @@ public class Obstacles : MonoBehaviour
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - ( 8 * 2 * Time.deltaTime));
 
-        if(transform.position.z <= -8)
+        if (transform.position.z <= -8)
         {
             Destroy(gameObject);
+            GameManager.Score++;
         }
     }
 }
